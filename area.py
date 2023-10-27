@@ -1,6 +1,6 @@
 import pandas as pd
 
-ROOT_DATA_DIR = r'C:\Users\bunny\Desktop\doi_10.5061_dryad.6wwpzgn2c__v8'
+ROOT_DATA_DIR = r'ROOTPATH'
 
 disambiguated_df = pd.read_csv(
     ROOT_DATA_DIR + '/disambiguated/comm_disambiguated.tsv.gz',
