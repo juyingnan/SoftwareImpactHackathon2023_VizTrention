@@ -80,8 +80,9 @@ app.layout = html.Div([
                     {'label': 'Top 25', 'value': 25},
                     {'label': 'Top 50', 'value': 50},
                     {'label': 'Top 100', 'value': 100},
+                    {'label': 'Top 250', 'value': 250},
                 ],
-                value=50  # default value
+                value=100  # default value
             )
         ], style={'width': '49%', 'display': 'inline-block', 'padding': '10px', 'boxShadow': '0px 0px 5px #ccc', 'borderRadius': '5px'}),
     ], style={'marginBottom': '10px'}),
@@ -89,10 +90,10 @@ app.layout = html.Div([
     html.Div([
         dcc.RangeSlider(
             id='year-slider',
-            min=1970,
+            min=1990,
             max=2021,
             step=1,
-            marks={i: str(i) for i in range(1970, 2021 + 1, 5)},
+            marks={i: str(i) for i in range(1990, 2021 + 1, 5)},
             value=[1995, max_year]  # default value
         )
     ], style={'padding': '10px', 'boxShadow': '0px 0px 5px #ccc', 'borderRadius': '5px', 'marginBottom': '20px'}),

@@ -4,17 +4,19 @@ import json
 # Data processing
 ROOT_DATA_DIR = r'C:\Users\bunny\Desktop\doi_10.5061_dryad.6wwpzgn2c__v8'
 
-using_sample = 3
+using_sample = 1
 file_name = '/disambiguated/comm_disambiguated.tsv'
 if using_sample != 1:
     file_name = file_name[:-4] + f'_sample{using_sample}.tsv'
 file_path = ROOT_DATA_DIR + file_name
 
+cols_to_load = ['doi', 'pubdate', 'software', 'curation_label', 'mapped_to_software']
+
 disambiguated_df = pd.read_csv(
     file_path,
     sep='\t',
-    engine='python'
-)
+    engine='python',
+    usecols=cols_to_load)
 
 disambiguated_df = disambiguated_df[(disambiguated_df['mapped_to_software'] != 'not_disambiguated') & (disambiguated_df['curation_label'] != 'not_software')]
 disambiguated_df['year'] = disambiguated_df['pubdate'].astype(str).str[:4].astype(int, errors='ignore')

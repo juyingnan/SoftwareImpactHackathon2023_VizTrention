@@ -35,7 +35,7 @@ def create_network(connections_df, selected_N, year_range):
         G.add_edge(row['Source'], row['Target'], weight=row['Count'])
    
     # Compute the layout of the graph
-    layout = G.layout('kk')  # Kamada-Kawai layout
+    layout = G.layout('auto') # Kamada-Kawai layout
     
     # Extract node positions from the layout
     node_x = [pos[0] for pos in layout.coords]
@@ -44,12 +44,16 @@ def create_network(connections_df, selected_N, year_range):
     # Compute the size of nodes based on the total connection count
     node_sizes = []
     node_labels = []
+    limit = 75 # Set a limit on the number of nodes to label
     for node in G.vs:
         in_edges = G.es.select(_target_in=[node.index])
         out_edges = G.es.select(_source_in=[node.index])
         total_weight = sum(in_edges['weight']) + sum(out_edges['weight'])
-        node_sizes.append(np.sqrt(total_weight) * 0.7)  # Adjust size multiplier as needed
-        node_labels.append(node['name'])
+        node_sizes.append(np.sqrt(total_weight) * 0.2)  # Adjust size multiplier as needed
+        if len(node_labels) < limit:
+            node_labels.append(node['name'])
+        else:
+            node_labels.append('')
 
     label_trace = go.Scatter(
         x=node_x, y=node_y,
@@ -98,7 +102,7 @@ def create_network(connections_df, selected_N, year_range):
     normalized_weights = (edge_weights - min(edge_weights)) / (edge_weight_range if edge_weight_range != 0 else 1)
 
     min_alpha = 0.1  # Set minimum alpha for visibility
-    alpha_range = 0.9  # Set the range of alpha values
+    alpha_range = 0.7  # Set the range of alpha values, min 0.1 / max 0.8
     
     traces = []  # List to store all the traces
     
@@ -165,9 +169,6 @@ def create_network(connections_df, selected_N, year_range):
                 )
     return fig
 
-    
-
-
 @app.callback(
     Output('software-connections', 'figure'),
     [Input('n-selector', 'value'),
@@ -202,7 +203,6 @@ def play_pause_animation(n_clicks, is_disabled):
     button_label = "Play" if new_disabled_state else "Stop"
     return new_disabled_state, button_label
 
-
 @app.callback(
     Output('year-slider', 'value'),
     Input('interval-component', 'n_intervals'),
@@ -219,7 +219,7 @@ def update_slider(n_intervals, current_year_range):
 app.layout = html.Div([
     html.Div([
         html.Div([
-            html.H6('N Most Cited Software:', style={'marginBottom': 5, 'marginTop': 0}),
+            html.H6('Most Mentioned Software:', style={'marginBottom': 5, 'marginTop': 0}),
             dcc.Dropdown(
                 id='n-selector',
                 options=[
@@ -228,8 +228,9 @@ app.layout = html.Div([
                     {'label': 'Top 25', 'value': 25},
                     {'label': 'Top 50', 'value': 50},
                     {'label': 'Top 100', 'value': 100},
+                    {'label': 'Top 250', 'value': 250},
                 ],
-                value=50  # default value
+                value=100  # default value
             )
         ], style={'width': '49%', 'display': 'inline-block', 'padding': '10px', 'boxShadow': '0px 0px 5px #ccc', 'borderRadius': '5px'}),
     ], style={'marginBottom': '10px'}),
