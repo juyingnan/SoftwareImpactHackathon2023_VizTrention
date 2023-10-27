@@ -9,7 +9,7 @@ def estimate_row_count(file_path, sample_size=5000):
     estimated_rows = file_size / average_row_size
     return int(estimated_rows)
 
-ROOT_DATA_DIR = r'C:\Users\bunny\Desktop\doi_10.5061_dryad.6wwpzgn2c__v8'
+ROOT_DATA_DIR = r'ROOTPATH'
 
 filename = ROOT_DATA_DIR + '/disambiguated/comm_disambiguated.tsv'
 num_rows = 7000000
