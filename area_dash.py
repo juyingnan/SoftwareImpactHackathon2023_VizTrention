@@ -7,7 +7,7 @@ import plotly.express as px
 app = dash.Dash(__name__)
 
 # data processing
-ROOT_DATA_DIR = r'C:\Users\bunny\Desktop\doi_10.5061_dryad.6wwpzgn2c__v8'
+ROOT_DATA_DIR = r'ROOTPATH'
 
 using_sample = True
 file_path = ROOT_DATA_DIR + '/disambiguated/comm_disambiguated.tsv'
